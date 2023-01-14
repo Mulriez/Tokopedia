@@ -6,9 +6,17 @@ abstract class Routes {
 
   static const HOME = _Paths.HOME;
   static const SPLASHSCREEN = _Paths.SPLASHSCREEN;
+  static const LOGIN = _Paths.LOGIN;
+  static const SIGNUP = _Paths.SIGNUP;
+  static const RESET = _Paths.RESET;
+  static const VERIFY = _Paths.VERIFY;
 }
 
 abstract class _Paths {
   static const HOME = '/home';
   static const SPLASHSCREEN = '/splashscreen';
+  static const LOGIN = '/login';
+  static const SIGNUP = '/signup';
+  static const RESET = '/reset';
+  static const VERIFY = '/verify';
 }
