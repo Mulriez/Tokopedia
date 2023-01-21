@@ -202,7 +202,7 @@ class SignupView extends GetView<SignupController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Image.asset("assets/Facebook.png"),
+                                      Image.asset("assets/logo/Facebook.png"),
                                       Text(
                                         "Facebook",
                                         style: TextStyle(
@@ -223,7 +223,7 @@ class SignupView extends GetView<SignupController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Image.asset("assets/Google.png"),
+                                      Image.asset("assets/logo/Google.png"),
                                       Text(
                                         "Google",
                                         style: TextStyle(

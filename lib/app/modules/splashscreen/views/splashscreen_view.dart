@@ -32,7 +32,7 @@ class SplashscreenView extends GetView<SplashscreenController> {
                       width: lebar,
                       height: tinggi * 0.3,
                       margin: EdgeInsets.only(bottom: 20),
-                      child: Image.asset("assets/sp.png")),
+                      child: Image.asset("assets/dll/sp.png")),
                   Container(
                     margin: EdgeInsets.only(bottom: 30),
                     width: 200,

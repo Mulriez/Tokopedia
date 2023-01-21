@@ -24,7 +24,7 @@ class VerifyView extends GetView<VerifyController> {
                   children: [
                     Container(
                       margin: EdgeInsets.only(bottom: 65),
-                      child: Image.asset('assets/Group 2.png'),
+                      child: Image.asset('assets/dll/Group 2.png'),
                     ),
                     Container(
                       child: Text(
@@ -44,7 +44,7 @@ class VerifyView extends GetView<VerifyController> {
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 55),
-                      width: lebar * 0.3,
+                      width: lebar * 0.4,
                       height: tinggi * 0.06,
                       child: ElevatedButton(
                         onPressed: () => print("pressed"),

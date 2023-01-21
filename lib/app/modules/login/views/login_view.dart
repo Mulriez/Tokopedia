@@ -110,7 +110,7 @@ class LoginView extends GetView<LoginController> {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: bgLogin2),
-                              onPressed: () {},
+                              onPressed: () => Get.toNamed(Routes.HOME),
                               child: Text(
                                 "Login",
                                 style: TextStyle(
@@ -161,7 +161,7 @@ class LoginView extends GetView<LoginController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Image.asset("assets/Facebook.png"),
+                                      Image.asset("assets/logo/Facebook.png"),
                                       Text(
                                         "Facebook",
                                         style: TextStyle(
@@ -182,7 +182,7 @@ class LoginView extends GetView<LoginController> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      Image.asset("assets/Google.png"),
+                                      Image.asset("assets/logo/Google.png"),
                                       Text(
                                         "Google",
                                         style: TextStyle(
