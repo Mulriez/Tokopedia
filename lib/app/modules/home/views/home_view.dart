@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
 import '../controllers/home_controller.dart';
@@ -184,7 +185,7 @@ class HomeView extends GetView<HomeController> {
                         Container(
                           margin: EdgeInsets.only(right: 10),
                           child: TextButton(
-                              onPressed: () {},
+                              onPressed: () => Get.toNamed(Routes.DETAIL),
                               child: Text(
                                 "Lihat Semua",
                                 style: TextStyle(
