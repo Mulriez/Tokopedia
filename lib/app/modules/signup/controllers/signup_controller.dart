@@ -6,6 +6,7 @@ class SignupController extends GetxController {
   final showhide = false.obs;
   changeEye() => showhide.toggle();
   final count = 0.obs;
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
   @override

@@ -85,7 +85,24 @@ class SplashscreenView extends GetView<SplashscreenController> {
                       style: TextStyle(color: Colors.white),
                     ))
               ],
-            )
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Text(
+                    "try another way",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                TextButton(
+                    onPressed: () => Get.toNamed(Routes.LOGIN_PHONE),
+                    child: Text(
+                      "Login by phone Number",
+                      style: TextStyle(color: Colors.white),
+                    ))
+              ],
+            ),
           ],
         ),
       ),

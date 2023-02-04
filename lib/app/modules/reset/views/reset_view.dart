@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/auth_controller_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
 import '../controllers/reset_controller.dart';
 
 class ResetView extends GetView<ResetController> {
+  final controller = Get.put(ResetController());
+  final authC = Get.put(AuthControllerController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -58,6 +61,7 @@ class ResetView extends GetView<ResetController> {
                               margin: EdgeInsets.only(bottom: 50),
                               width: lebar,
                               child: TextField(
+                                controller: controller.email,
                                 decoration: InputDecoration(
                                     labelText: "Enter your Email Address",
                                     border: OutlineInputBorder(),
@@ -72,7 +76,7 @@ class ResetView extends GetView<ResetController> {
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: bgLogin2),
-                                  onPressed: () => Get.toNamed(Routes.VERIFY),
+                                  onPressed: () => authC.resetPassword(controller.email.text),
                                   child: Text(
                                     "Send Instructions",
                                     style: TextStyle(

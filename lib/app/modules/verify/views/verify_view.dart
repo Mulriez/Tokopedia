@@ -1,12 +1,17 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/auth_controller_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
 import '../controllers/verify_controller.dart';
 
 class VerifyView extends GetView<VerifyController> {
+  final controller = Get.put(VerifyController());
+  final authC = Get.put(AuthControllerController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -47,7 +52,7 @@ class VerifyView extends GetView<VerifyController> {
                       width: lebar * 0.4,
                       height: tinggi * 0.06,
                       child: ElevatedButton(
-                        onPressed: () => print("pressed"),
+                        onPressed: () => authC.openMail(),
                         child: Text(
                           "Open Email App",
                           style: TextStyle(

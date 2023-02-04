@@ -6,6 +6,10 @@ import 'package:tokopedia/app/modules/home/bindings/home_binding.dart';
 import 'package:tokopedia/app/modules/home/views/home_view.dart';
 import 'package:tokopedia/app/modules/login/bindings/login_binding.dart';
 import 'package:tokopedia/app/modules/login/views/login_view.dart';
+import 'package:tokopedia/app/modules/loginPhone/bindings/login_phone_binding.dart';
+import 'package:tokopedia/app/modules/loginPhone/views/login_phone_view.dart';
+import 'package:tokopedia/app/modules/otpVerify/bindings/otp_verify_binding.dart';
+import 'package:tokopedia/app/modules/otpVerify/views/otp_verify_view.dart';
 import 'package:tokopedia/app/modules/reset/bindings/reset_binding.dart';
 import 'package:tokopedia/app/modules/reset/views/reset_view.dart';
 import 'package:tokopedia/app/modules/signup/bindings/signup_binding.dart';
@@ -57,6 +61,16 @@ class AppPages {
       name: _Paths.DETAIL,
       page: () => DetailView(),
       binding: DetailBinding(),
+    ),
+    GetPage(
+      name: _Paths.LOGIN_PHONE,
+      page: () => LoginPhoneView(),
+      binding: LoginPhoneBinding(),
+    ),
+    GetPage(
+      name: _Paths.OTP_VERIFY,
+      page: () => OtpVerifyView(),
+      binding: OtpVerifyBinding(),
     ),
   ];
 }

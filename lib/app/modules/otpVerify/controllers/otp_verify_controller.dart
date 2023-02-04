@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class VerifyController extends GetxController {
-  //TODO: Implement VerifyController
-  TextEditingController click = TextEditingController();
+class OtpVerifyController extends GetxController {
+  //TODO: Implement OtpVerifyController
 
   final count = 0.obs;
   @override

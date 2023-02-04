@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/auth_controller_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
@@ -8,6 +9,7 @@ import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
   final controller = Get.put(LoginController());
+  final authC = Get.put(AuthControllerController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -52,6 +54,7 @@ class LoginView extends GetView<LoginController> {
                           margin: EdgeInsets.only(bottom: 20),
                           width: lebar,
                           child: TextField(
+                            controller: controller.email,
                             decoration: InputDecoration(
                                 labelText: "Enter your Email",
                                 border: OutlineInputBorder(),
@@ -97,7 +100,7 @@ class LoginView extends GetView<LoginController> {
                           width: lebar,
                           margin: EdgeInsets.only(bottom: 30),
                           child: TextButton(
-                            onPressed: () => Get.toNamed(Routes.RESET),
+                            onPressed: () => Get.toNamed("/login"),
                             child: Text(
                               "Forgot password",
                               style: TextStyle(color: abu),
@@ -110,7 +113,7 @@ class LoginView extends GetView<LoginController> {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: bgLogin2),
-                              onPressed: () => Get.toNamed(Routes.HOME),
+                              onPressed: () => authC.login(controller.email.text, controller.password.text),
                               child: Text(
                                 "Login",
                                 style: TextStyle(
@@ -177,7 +180,7 @@ class LoginView extends GetView<LoginController> {
                                 child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
                                       backgroundColor: Colors.white),
-                                  onPressed: () {},
+                                  onPressed: () => authC.signInWithGoogle(),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
@@ -209,7 +212,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
                       TextButton(
-                          onPressed: () => Get.toNamed(Routes.SIGNUP),
+                          onPressed: () => Get.toNamed("/signup"),
                           child: Text(
                             "Sign up",
                             style: TextStyle(color: bgLogin2),

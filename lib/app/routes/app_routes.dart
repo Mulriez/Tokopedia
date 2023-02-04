@@ -11,6 +11,8 @@ abstract class Routes {
   static const RESET = _Paths.RESET;
   static const VERIFY = _Paths.VERIFY;
   static const DETAIL = _Paths.DETAIL;
+  static const LOGIN_PHONE = _Paths.LOGIN_PHONE;
+  static const OTP_VERIFY = _Paths.OTP_VERIFY;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const RESET = '/reset';
   static const VERIFY = '/verify';
   static const DETAIL = '/detail';
+  static const LOGIN_PHONE = '/login-phone';
+  static const OTP_VERIFY = '/otp-verify';
 }

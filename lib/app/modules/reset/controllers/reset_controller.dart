@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class ResetController extends GetxController {
   //TODO: Implement ResetController
+   TextEditingController email = TextEditingController();
 
   final count = 0.obs;
   @override

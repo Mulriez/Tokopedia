@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/auth_controller_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
 import '../controllers/signup_controller.dart';
 
 class SignupView extends GetView<SignupController> {
+   final controller = Get.put(SignupController());
+  final authC = Get.put(AuthControllerController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -60,6 +63,7 @@ class SignupView extends GetView<SignupController> {
                           margin: EdgeInsets.only(bottom: 20),
                           width: lebar,
                           child: TextField(
+                            controller: controller.email,
                             decoration: InputDecoration(
                                 labelText: "Enter your Email",
                                 border: OutlineInputBorder(),
@@ -151,7 +155,7 @@ class SignupView extends GetView<SignupController> {
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: bgLogin2),
-                              onPressed: () {},
+                              onPressed: () => authC.signUp(controller.email.text, controller.password.text),
                               child: Text(
                                 "Sign Up",
                                 style: TextStyle(

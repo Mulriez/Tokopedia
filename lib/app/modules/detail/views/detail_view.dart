@@ -259,7 +259,7 @@ class DetailView extends GetView<DetailController> {
                         Row(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(right: 10),
+                              margin: EdgeInsets.only(right: 5),
                               child: Text("Online",
                                   style: TextStyle(
                                       color: tamts,
