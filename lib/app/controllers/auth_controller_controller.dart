@@ -9,12 +9,14 @@ import 'package:url_launcher/url_launcher.dart';
 class AuthControllerController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   Uri _url = Uri.parse('https://mail.google.com/mail/u/0/#inbox');
+  String kodeVerifikasi = "";
+
   Stream<User?> streamAuthStatus() => auth.authStateChanges();
   login(String emailAddress, String password) async {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: emailAddress, password: password);
-      Get.offAllNamed(Routes.HOME);
+      Get.offAllNamed(Routes.HOME_ADMIN);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -100,6 +102,48 @@ class AuthControllerController extends GetxController {
   Future<void> openMail() async {
     if (!await launchUrl(_url)) {
       throw Exception('Could not launch $_url');
+    }
+  }
+
+  verifyPhone(String nomor) async {
+    await auth.verifyPhoneNumber(
+        phoneNumber: "+62${nomor}",
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await auth.signInWithCredential(credential).then((value) {
+            if (value.user != null) {
+              Get.toNamed(Routes.HOME);
+            }
+          });
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          Get.defaultDialog(
+              title: "Alert!",
+              middleText: "GAGAL mengirim pesan verifikasi, MASBRO");
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          kodeVerifikasi = verificationId;
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          kodeVerifikasi = verificationId;
+        },
+        timeout: Duration(seconds: 60));
+    Get.toNamed(Routes.OTP_VERIFY, parameters: {"phone": nomor});
+  }
+
+  checkOtp(String sms) async {
+    try {
+      await auth
+          .signInWithCredential(PhoneAuthProvider.credential(
+              verificationId: kodeVerifikasi, smsCode: sms))
+          .then((value) {
+        if (value.user != null) {
+          Get.toNamed(Routes.HOME);
+        }
+      });
+    } catch (e) {
+      Get.defaultDialog(
+          title: "Alert!",
+          middleText: "Kode verifikasi salah");
     }
   }
 }

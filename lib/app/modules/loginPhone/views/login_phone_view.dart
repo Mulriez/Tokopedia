@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/auth_controller_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
@@ -9,6 +10,7 @@ import '../controllers/login_phone_controller.dart';
 class LoginPhoneView extends GetView<LoginPhoneController> {
   @override
   final controller = Get.put(LoginPhoneController());
+  final authC = Get.put(AuthControllerController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -99,7 +101,7 @@ class LoginPhoneView extends GetView<LoginPhoneController> {
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor: bgLogin2),
-                          onPressed: () {},
+                          onPressed: () => authC.verifyPhone(controller.phone.text),
                           child: Text(
                             "Send OTP code",
                             style: TextStyle(

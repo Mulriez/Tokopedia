@@ -212,7 +212,7 @@ class LoginView extends GetView<LoginController> {
                         ),
                       ),
                       TextButton(
-                          onPressed: () => Get.toNamed("/signup"),
+                          onPressed: () => Get.toNamed(Routes.SIGNUP),
                           child: Text(
                             "Sign up",
                             style: TextStyle(color: bgLogin2),
