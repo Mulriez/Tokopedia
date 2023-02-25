@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:tokopedia/app/controllers/auth_controller_controller.dart';
+import 'package:tokopedia/app/controllers/produk_controller.dart';
+import 'package:tokopedia/app/controllers/slider_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../controllers/home_controller.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -13,6 +15,8 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 class HomeView extends GetView<HomeController> {
   final controller = Get.put(HomeController());
   final authC = Get.put(AuthControllerController());
+  final sliderC = Get.put(SliderController());
+  final produkC = Get.put(ProdukController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -79,33 +83,40 @@ class HomeView extends GetView<HomeController> {
                       ),
                     ],
                   )),
-              Container(
-                  width: lebar,
-                  height: tinggi * 0.15,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                        height: 400.0,
-                        autoPlay: true,
-                        autoPlayInterval: Duration(seconds: 3)),
-                    items: [
-                      "assets/banner/03.png",
-                      "assets/banner/02.png",
-                      "assets/banner/01.png"
-                    ].map((i) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                            width: lebar,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            child: Container(
-                              child: Image.asset(i),
-                            ),
-                          );
-                        },
-                      );
-                    }).toList(),
-                  )),
+              FutureBuilder<QuerySnapshot<Object?>>(
+                future: sliderC.getData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    var listData = snapshot.data!.docs;
+                    return Container(
+                        width: lebar,
+                        height: tinggi * 0.15,
+                        margin: EdgeInsets.symmetric(vertical: 10),
+                        child: CarouselSlider(
+                          options: CarouselOptions(
+                              height: 400.0,
+                              autoPlay: true,
+                              autoPlayInterval: Duration(seconds: 3)),
+                          items: listData.map((i) {
+                            return Builder(
+                              builder: (BuildContext context) {
+                                return Container(
+                                  width: lebar,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                  child: Container(
+                                    child: Image.network((i.data() as Map<
+                                        String, dynamic>)["gambarSlider"]),
+                                  ),
+                                );
+                              },
+                            );
+                          }).toList(),
+                        ));
+                  } else {
+                    return SizedBox();
+                  }
+                },
+              ),
               Container(
                 margin: EdgeInsets.only(top: 15),
                 child: Wrap(
@@ -407,67 +418,42 @@ class HomeView extends GetView<HomeController> {
               SizedBox(
                 height: tinggi * 0.04,
               ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
-                  child: Wrap(spacing: 15, runSpacing: 20, children: [
-                    ProdukCard2(
-                        gambar: 'assets/produk/rival1.png',
-                        daerah: 'Jakarta Pusat',
-                        diskon: '12%',
-                        harga: 'Rp 699.000',
-                        potongan: 'Rp 790.000',
-                        produk: 'SteelSeries Rival 3 Wireless - Gaming ...',
-                        rating: '5.0',
-                        tinggi: 340,
-                        lebar: 165,
-                        tinggiGambar: 165,
-                        lebarGambar: 165,
-                        marginKanan: 0,
-                        terjual: '124'),
-                    ProdukCard2(
-                        gambar: 'assets/produk/monitor1.png',
-                        daerah: 'Kota Depok',
-                        diskon: '44%',
-                        harga: 'Rp 5.949.900',
-                        potongan: 'Rp 1.000.000',
-                        produk: 'Monitor Lenovo G34W-30 34" ...',
-                        rating: '5.0',
-                        tinggi: 340,
-                        lebar: 165,
-                        tinggiGambar: 165,
-                        lebarGambar: 165,
-                        marginKanan: 0,
-                        terjual: '23'),
-                    ProdukCard2(
-                        gambar: 'assets/produk/port.png',
-                        daerah: 'Kab. Tangerang',
-                        diskon: '44%',
-                        harga: 'Rp 3.750',
-                        potongan: 'Rp 1.000.000',
-                        produk: 'Myvo Steker T Multi Lampu Colokan ...',
-                        rating: '5.0',
-                        tinggi: 340,
-                        lebar: 165,
-                        tinggiGambar: 165,
-                        lebarGambar: 165,
-                        marginKanan: 0,
-                        terjual: '76'),
-                    ProdukCard2(
-                        gambar: 'assets/produk/logi3.png',
-                        daerah: 'Kab. Bandung',
-                        diskon: '44%',
-                        harga: 'Rp 609.000',
-                        potongan: 'Rp 1.000.000',
-                        produk: 'Logitech G PRO X SUPERLIGHT ...',
-                        rating: '5.0',
-                        tinggi: 340,
-                        lebar: 165,
-                        tinggiGambar: 165,
-                        lebarGambar: 165,
-                        marginKanan: 0,
-                        terjual: '1rb'),
-                  ]),
-                ),
+              FutureBuilder<QuerySnapshot<Object?>>(
+                future: produkC.getData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    var produkData = snapshot.data!.docs;
+                    return Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 24),
+                        child: Wrap(
+                            spacing: 15,
+                            runSpacing: 20,
+                            children: List.generate(produkData.length, (index) {
+                              return ProdukCard2(
+                                  gambar: (produkData[index].data()
+                                      as Map<String, dynamic>)["gambarP"],
+                                  daerah: 'Kota Depok',
+                                  diskon:  (produkData[index].data()
+                                      as Map<String, dynamic>)["diskonP"].toString(),
+                                  harga:  (produkData[index].data()
+                                      as Map<String, dynamic>)["hargaP"].toString(),
+                                  potongan:  (produkData[index].data()
+                                      as Map<String, dynamic>)["hargaFix"].toString(),
+                                  produk: (produkData[index].data()
+                                      as Map<String, dynamic>)["namaP"],
+                                  rating: '5.0',
+                                  tinggi: 340,
+                                  lebar: 165,
+                                  tinggiGambar: 165,
+                                  lebarGambar: 165,
+                                  marginKanan: 0,
+                                  terjual: '23');
+                            })));
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
               SizedBox(
                 height: tinggi * 0.02,
               ),
@@ -850,7 +836,7 @@ Widget ProdukCard2(
         Container(
           width: lebarGambar,
           height: tinggiGambar,
-          child: Image.asset(gambar),
+          child: Image.network(gambar),
         ),
         Container(
           width: double.infinity,

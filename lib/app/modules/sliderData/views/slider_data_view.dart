@@ -59,8 +59,8 @@ class SliderDataView extends GetView<SliderDataController> {
             }
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => sliderC.adddata(true, "Mei",
-            "https://wallpapers.com/images/file/honkai-impact-mei-new-form-udxvcn25l8a6enht.jpg"),
+        
+        onPressed: () => Get.toNamed(Routes.CREATE_PAGE),
         child: Icon(Icons.add),
       ),
     );

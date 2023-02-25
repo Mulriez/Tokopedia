@@ -10,18 +10,21 @@ dependencies:
   flutter:
     sdk: flutter
   get: 4.6.5
-  pinput: ^2.2.21
+ 
 
 dev_dependencies:
   carousel_slider: ^4.2.1
-  cloud_firestore: ^4.3.2
+  cloud_firestore: ^4.4.2
+  file_picker: ^5.2.5
   firebase_auth: ^4.2.5
   firebase_core: ^2.4.1
+  firebase_storage: ^11.0.2
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
   google_sign_in: ^5.4.4
   intl_phone_number_input: ^0.7.2
+  pinput: ^2.2.31
   step_progress_indicator: ^1.0.2
   url_launcher: ^6.1.8
 

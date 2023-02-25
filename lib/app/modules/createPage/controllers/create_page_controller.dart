@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/slider_controller.dart';
 
 class CreatePageController extends GetxController {
   //TODO: Implement CreatePageController
@@ -8,6 +9,11 @@ class CreatePageController extends GetxController {
 
   TextEditingController gambarSlider = TextEditingController();
   TextEditingController deskripsiSlider = TextEditingController();
+
+  uploadGambar() {
+    final data = SliderController().addPhoto();
+    gambarSlider.text = data;
+  }
 
 
   final count = 0.obs;

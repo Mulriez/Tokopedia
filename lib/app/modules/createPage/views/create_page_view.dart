@@ -44,6 +44,9 @@ class CreatePageView extends GetView<CreatePageController> {
                       padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
                       child: Column(
                         children: [
+                          ElevatedButton(
+                              onPressed: () => controller.uploadGambar(),
+                              child: Text("Upload Photo")),
                           CustomInput(
                               controller: controller.gambarSlider,
                               label: 'Link gambar Slider',

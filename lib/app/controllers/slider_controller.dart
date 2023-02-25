@@ -1,13 +1,19 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
 
 class SliderController extends GetxController {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseStorage storage = FirebaseStorage.instance;
+  String url = "";
+  File? path;
+
 
   adddata(bool aktifSlider, String ketSlider, String gambarSlider) async {
     // Create a new user with a first and last name
@@ -18,7 +24,7 @@ class SliderController extends GetxController {
       "ketSlider": ketSlider
     };
 
-// Add a new document with a generated ID
+   // Add a new document with a generated ID
     try {
       await slider.add(data).then((DocumentReference doc) =>
           Get.defaultDialog(title: "Alert!", middleText: "berhasiel, MASBRO"));
@@ -74,6 +80,28 @@ class SliderController extends GetxController {
     } catch (e) {
       Get.defaultDialog(title: 'Alert', middleText: 'gagal mendelete data');
       print(e);
+    }
+  }
+  addPhoto() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      String namaFile = result.files.first.name;
+      url = namaFile;
+      path = file;
+
+      try {
+        await storage.ref("${namaFile}").putFile(file);
+        final data = await storage.ref("${namaFile}").getDownloadURL();
+
+        url = data;
+        return url;
+      } catch (e) {
+        Get.defaultDialog(title: 'Alert', middleText: 'gagal mengupload data');
+      }
+    } else {
+      print("tidak mengirim file");
     }
   }
 }
