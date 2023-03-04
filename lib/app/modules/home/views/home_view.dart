@@ -13,7 +13,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class HomeView extends GetView<HomeController> {
-  final controller = Get.put(HomeController());
+  final homeC = Get.put(HomeController());
   final authC = Get.put(AuthControllerController());
   final sliderC = Get.put(SliderController());
   final produkC = Get.put(ProdukController());
@@ -215,53 +215,60 @@ class HomeView extends GetView<HomeController> {
                   ],
                 ),
               ),
-              Container(
-                margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                width: lebar,
-                height: 310,
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
-                  colors: [
-                    Color(0xff01A0C6),
-                    Color(0xff01AA6C),
-                  ],
-                )),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 32),
-                        child:
-                            Image.asset('assets/diskonan/keranjangDiskon.png'),
-                      ),
-                      Row(
-                        children: [
-                          KejarDiskonCard(
-                              gambar: 'assets/diskonan/masker.png',
-                              daerah: 'Kab. Bandung',
-                              diskon: '92%',
-                              harga: 'Rp 1.000',
-                              totalPersen: 100,
-                              currentPersen: 80,
-                              potongan: 'Rp 12.546',
-                              status: 'Segera Habis'),
-                          KejarDiskonCard(
-                              gambar: 'assets/produk/port.png',
-                              daerah: 'Jakarta Timur',
-                              diskon: '6%',
-                              harga: 'Rp 103.000',
-                              totalPersen: 100,
-                              currentPersen: 35,
-                              potongan: 'Rp 109.900',
-                              status: 'Tersedia')
+              FutureBuilder<QuerySnapshot<Object?>>(
+                future: produkC.kejarDisk(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    var diskon = snapshot.data!.docs;
+                    return Container(
+                      margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      width: lebar,
+                      height: 310,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [
+                          Color(0xff01A0C6),
+                          Color(0xff01AA6C),
                         ],
-                      )
-                    ],
-                  ),
-                ),
+                      )),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 32),
+                              child: Image.asset(
+                                  'assets/diskonan/keranjangDiskon.png'),
+                            ),
+                            Row(
+                                children: List.generate(diskon.length, (index) {
+                              return KejarDiskonCard(
+                                  gambar: (diskon[index].data()
+                                      as Map<String, dynamic>)["gambarP"],
+                                  daerah: 'Kab. Bandung',
+                                  diskon: (diskon[index].data()
+                                          as Map<String, dynamic>)["diskonP"]
+                                      .toString(),
+                                  harga: (diskon[index].data()
+                                          as Map<String, dynamic>)["hargaFix"]
+                                      .toString(),
+                                  totalPersen: 100,
+                                  currentPersen: 80,
+                                  potongan: (diskon[index].data()
+                                          as Map<String, dynamic>)["hargaP"]
+                                      .toString(),
+                                  status: 'Segera Habis');
+                            }))
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
               ),
               Container(
                 child: Column(
@@ -433,14 +440,18 @@ class HomeView extends GetView<HomeController> {
                                   gambar: (produkData[index].data()
                                       as Map<String, dynamic>)["gambarP"],
                                   daerah: 'Kota Depok',
-                                  diskon:  (produkData[index].data()
-                                      as Map<String, dynamic>)["diskonP"].toString(),
-                                  harga:  (produkData[index].data()
-                                      as Map<String, dynamic>)["hargaP"].toString(),
-                                  potongan:  (produkData[index].data()
-                                      as Map<String, dynamic>)["hargaFix"].toString(),
+                                  diskon: (produkData[index].data()
+                                          as Map<String, dynamic>)["diskonP"]
+                                      .toString(),
+                                  harga: (produkData[index].data()
+                                          as Map<String, dynamic>)["hargaFix"]
+                                      .toString(),
+                                  potongan: (produkData[index].data()
+                                          as Map<String, dynamic>)["hargaP"]
+                                      .toString(),
                                   produk: (produkData[index].data()
                                       as Map<String, dynamic>)["namaP"],
+                                  argument: produkData[index],
                                   rating: '5.0',
                                   tinggi: 340,
                                   lebar: 165,
@@ -526,7 +537,7 @@ Widget KejarDiskonCard(
   return Container(
     margin: EdgeInsets.only(right: 15),
     width: 146,
-    height: 276,
+    height: 282,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8), color: Colors.white),
     child: Column(
@@ -534,7 +545,7 @@ Widget KejarDiskonCard(
         Container(
           width: 146,
           height: 146,
-          child: Image.asset(gambar),
+          child: Image.network(gambar),
         ),
         Container(
           width: double.infinity,
@@ -632,7 +643,7 @@ Widget KejarDiskonCard(
 Widget pilihan(lebar, warna, warna2, judul, warna3) {
   return Container(
     width: lebar * 0.3,
-    height: 66,
+    height: 69,
     padding: EdgeInsets.all(12),
     margin: EdgeInsets.only(right: 12),
     decoration: BoxDecoration(
@@ -671,7 +682,7 @@ Widget ProdukCard({
   return Container(
     margin: EdgeInsets.only(right: 15),
     width: 146,
-    height: 316,
+    height: 322,
     decoration: BoxDecoration(boxShadow: [
       BoxShadow(
         color: abu2,
@@ -803,6 +814,7 @@ Widget ProdukCard2(
     terjual,
     rating,
     produk,
+    argument,
     double lebar = 146,
     double tinggi = 316,
     double lebarGambar = 146,
@@ -818,124 +830,127 @@ Widget ProdukCard2(
 // void main() {
 //   print(truncate('Hello, World!', length: 4));
 // }
-  return Container(
-    margin: EdgeInsets.only(right: marginKanan),
-    // padding: EdgeInsets.symmetric(vertical: 10),
-    width: lebar,
-    height: tinggi,
-    decoration: BoxDecoration(boxShadow: [
-      BoxShadow(
-        color: Colors.grey.withOpacity(0.5),
-        spreadRadius: 5,
-        blurRadius: 7,
-        offset: Offset(0, 0), // changes position of shadow
-      ),
-    ], borderRadius: BorderRadius.circular(8), color: Colors.white),
-    child: Column(
-      children: [
-        Container(
-          width: lebarGambar,
-          height: tinggiGambar,
-          child: Image.network(gambar),
+  return InkWell(
+    onTap: () => Get.toNamed(Routes.DETAIL, arguments: argument),
+    child: Container(
+      margin: EdgeInsets.only(right: marginKanan),
+      // padding: EdgeInsets.symmetric(vertical: 10),
+      width: lebar,
+      height: tinggi,
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(0, 0), // changes position of shadow
         ),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.fromLTRB(10, 12, 10, 12),
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: 10),
-                alignment: Alignment.centerLeft,
-                child: Text(truncate(produk, length: 25),
-                    style:
-                        TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  harga,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      ], borderRadius: BorderRadius.circular(8), color: Colors.white),
+      child: Column(
+        children: [
+          Container(
+            width: lebarGambar,
+            height: tinggiGambar,
+            child: Image.network(gambar),
+          ),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(10, 12, 10, 12),
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  alignment: Alignment.centerLeft,
+                  child: Text(truncate(produk, length: 25),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w400)),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 6, top: 6),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 6),
-                      width: 36,
-                      height: 20,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadiusDirectional.circular(2),
-                          color: bgRed2),
-                      child: Center(
-                        child: Text(
-                          diskon,
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              color: bgRed),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    harga,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 6, top: 6),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 6),
+                        width: 36,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadiusDirectional.circular(2),
+                            color: bgRed2),
+                        child: Center(
+                          child: Text(
+                            diskon,
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: bgRed),
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      child: Text(
-                        potongan,
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            decoration: TextDecoration.lineThrough,
-                            color: abu),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(bottom: 16),
-                child: Row(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 2),
-                      child: Image.asset('assets/produk/u.png'),
-                    ),
-                    Container(
-                      child: Text(
-                        daerah,
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: abu),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  children: [
-                    Container(
-                        margin: EdgeInsets.only(right: 4),
-                        child: Icon(
-                          CupertinoIcons.star_fill,
-                          color: Color(0xffffc400),
-                          size: 13,
-                        )),
-                    Container(
-                      child: Text('$rating | Terjual $terjual',
+                      Container(
+                        child: Text(
+                          potongan,
                           style: TextStyle(
-                              fontSize: 10,
+                              fontSize: 12,
                               fontWeight: FontWeight.w400,
-                              color: abu)),
-                    ),
-                  ],
+                              decoration: TextDecoration.lineThrough,
+                              color: abu),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        )
-      ],
+                Container(
+                  margin: EdgeInsets.only(bottom: 16),
+                  child: Row(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(right: 2),
+                        child: Image.asset('assets/produk/u.png'),
+                      ),
+                      Container(
+                        child: Text(
+                          daerah,
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: abu),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(right: 4),
+                          child: Icon(
+                            CupertinoIcons.star_fill,
+                            color: Color(0xffffc400),
+                            size: 13,
+                          )),
+                      Container(
+                        child: Text('$rating | Terjual $terjual',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.w400,
+                                color: abu)),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     ),
   );
 }

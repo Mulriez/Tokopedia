@@ -39,4 +39,28 @@ class ProdukController extends GetxController {
     CollectionReference produk = firestore.collection("produk");
     return await produk.get();
   }
+
+  filterData() async {
+    final result = await firestore
+        .collection("produk")
+        // .where("hargaFix", isEqualTo: 100000)
+        // .orderBy("hargaFix", descending: true)
+        // .limitToLast(5)
+        .where("hargaFix", isEqualTo: true)
+        .get();
+    print(result.docs.length);
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    if (result.docs.length > 0) {
+      result.docs.forEach((element) {
+        print(element.data());
+      });
+    } else {
+      print("NOTHING IN THIS WAY");
+    }
+  }
+
+  Future<QuerySnapshot<Object?>> kejarDisk() async {
+    CollectionReference diskon = firestore.collection("produk");
+    return await diskon.where('flashSale', isEqualTo: true).get();
+  }
 }

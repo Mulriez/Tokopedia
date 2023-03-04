@@ -4,12 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:tokopedia/app/controllers/produk_controller.dart';
 import 'package:tokopedia/app/routes/app_pages.dart';
 import 'package:tokopedia/config/warna.dart';
 
 import '../controllers/detail_controller.dart';
 
 class DetailView extends GetView<DetailController> {
+  final listData = Get.arguments;
+  final controllerProduk = Get.put(ProdukController());
   @override
   Widget build(BuildContext context) {
     double tinggi = MediaQuery.of(context).size.height;
@@ -74,7 +77,12 @@ class DetailView extends GetView<DetailController> {
                 ],
               )),
           Container(
-            child: Image.asset("/detail/prod.png"),
+            width: lebar,
+            height: tinggi * 0.43,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(listData['gambarP']), fit: BoxFit.cover),
+            ),
           ),
           Container(
             padding: EdgeInsets.fromLTRB(25, 16, 25, 0),
@@ -82,7 +90,7 @@ class DetailView extends GetView<DetailController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Rp370.000",
+                  listData['hargaFix'].toString(),
                   style: TextStyle(
                       fontWeight: FontWeight.bold, fontSize: 24, color: tam),
                 ),
@@ -93,9 +101,9 @@ class DetailView extends GetView<DetailController> {
           Container(
             padding: EdgeInsets.fromLTRB(25, 25, 20, 0),
             child: Text(
-              "Mine. Perfumery ETHEREAL - 50ml Eau De Parfum",
+              listData["namaP"],
               style: TextStyle(
-                  fontWeight: FontWeight.w400, fontSize: 18, color: tam2),
+                  fontWeight: FontWeight.w400, fontSize: 20, color: tam2),
             ),
           ),
           Container(
@@ -208,7 +216,7 @@ class DetailView extends GetView<DetailController> {
             padding: EdgeInsets.fromLTRB(25, 30, 25, 10),
             alignment: Alignment.topLeft,
             child: Text(
-              "Mine. ETHEREAL Eau De Parfum 50mi glass perfume bottle in hard box packaging • ETHEREAL • With facets that highlight a side ...",
+              listData['descP'],
               style: TextStyle(
                   fontWeight: FontWeight.w400, fontSize: 14, color: tam),
             ),
@@ -875,7 +883,7 @@ Widget ProdukCard({
   return Container(
     margin: EdgeInsets.only(right: 15),
     width: 146,
-    height: 316,
+    height: 322,
     decoration: BoxDecoration(boxShadow: [
       BoxShadow(
         color: abu2,
