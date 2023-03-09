@@ -159,7 +159,7 @@ class LoginView extends GetView<LoginController> {
                                   style: OutlinedButton.styleFrom(
                                       // side: BorderSide(width: 0.5, color: Colors.black),
                                       backgroundColor: Colors.white),
-                                  onPressed: () {},
+                                  onPressed: () => authC.signInWithFacebook(),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
